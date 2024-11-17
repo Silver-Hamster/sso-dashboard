@@ -1,10 +1,12 @@
 <template>
   <v-container>
-    <h1>Create Menu</h1>
+    <h1>Create State</h1>
     <v-form ref="formRef" @submit.prevent="submitForm">
       <v-text-field v-model="form.name" label="Name" :rules="nameRules" required></v-text-field>
       <v-text-field v-model="form.slug" label="Slug" :rules="slugRules" required></v-text-field>
-      <v-btn :to="{ name: 'AdminMenus' }" color="secondry" class="mr-2">Back</v-btn>
+      <v-text-field v-model="form.code" label="State code" :rules="codeRules" required></v-text-field>
+
+      <v-btn :to="{ name: 'AdminStates' }" color="secondry" class="mr-2">Back</v-btn>
       <v-btn type="submit" color="primary">Submit</v-btn>
     </v-form>
     <v-dialog v-model="showPopup" max-width="290">
@@ -38,16 +40,30 @@ const formRef = ref(null);
 const form = ref({
   name: '',
   slug: '',
+  code: '',
 });
 
 const showPopup = ref(false);
 const showErrorPopup = ref(false);
+watch(() => form.value.name, (newVal) => {
+  if (newVal) {
+    form.value.slug = newVal
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '');
+  } else {
+    form.value.slug = '';
+  }
+});
 
 const nameRules = [
   (v: string) => !!v || 'Name is required',
   (v: string) => v.length <= 50 || 'Name must be less than 50 characters',
 ];
-
+const codeRules = [
+  (v: string) => !!v || 'State code is required',
+  (v: string) => v.length <= 3 || 'State must be less than 3 characters',
+];
 const slugRules = [
   (v: string) => !!v || 'Slug is required',
   (v: string) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v) || 'Slug must be a valid format',
@@ -60,9 +76,10 @@ const submitForm = () => {
   }
 
   try {
-    axiosInstance.post('/menus', {
+    axiosInstance.post('/admin/states', {
       name: form.value.name,
       slug: form.value.slug,
+      code: form.value.code,
     }).then(response => {
       console.log('Form submitted successfully:', response.data);
       resetForm();
@@ -82,6 +99,7 @@ const resetForm = () => {
   form.value = {
     name: '',
     slug: '',
+    code: '',
   };
   formRef.value.resetValidation();
 };
