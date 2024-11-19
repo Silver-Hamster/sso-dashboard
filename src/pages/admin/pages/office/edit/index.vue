@@ -5,7 +5,7 @@
       <v-text-field v-model="form.name" label="Name" :rules="nameRules" required></v-text-field>
       <v-text-field v-model="form.slug" label="Slug" :rules="slugRules" required></v-text-field>
       <v-text-field v-model="form.code" label="State code" :rules="codeRules" required></v-text-field>
-      <v-btn :to="{ name: 'AdminStates' }" color="secondry" class="mr-2 my-5">Back</v-btn>
+      <v-btn :to="{ name: 'AdminOffices' }" color="secondry" class="mr-2 my-5">Back</v-btn>
       <v-btn type="submit" color="primary my-5">Update</v-btn>
     </v-form>
   </v-container>

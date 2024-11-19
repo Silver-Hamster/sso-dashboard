@@ -3,21 +3,21 @@
         <v-data-table :headers="headers" :items="items" :search="search" :loading="loading">
             <template v-slot:top>
                 <v-toolbar flat>
-                    <v-toolbar-title>State</v-toolbar-title>
+                    <v-toolbar-title>Offices</v-toolbar-title>
                     <v-divider class="mx-2" inset vertical></v-divider>
                     <v-spacer></v-spacer>
                     <v-text-field v-model="search" append-icon="mdi-magnify" class="me-4" label="Search" single-line
                         hide-details></v-text-field>
                     <v-btn class="btn border text-light bg-dark px-2 rounded me-4"
-                        :to="{ name: 'AdminStateCreate' }">Create State</v-btn>
+                        :to="{ name: 'AdminOfficesCreate' }">Create office</v-btn>
                 </v-toolbar>
             </template>
             <template v-slot:item.actions="{ item }">
                 <div class="d-flex">
-                    <v-btn icon @click="editState(item)" class="mx-2">
+                    <v-btn icon @click="editOffice(item)" class="mx-2">
                         <v-icon>mdi-pencil</v-icon>
                     </v-btn>
-                    <v-btn icon @click="deleteState(item)" class="mx-2">
+                    <v-btn icon @click="deleteOffice(item)" class="mx-2">
                         <v-icon>mdi-delete</v-icon>
                     </v-btn>
                 </div>
@@ -33,9 +33,13 @@ import axiosInstance from '@plugins/axios';
 import { useRouter } from 'vue-router';
 
 const headers = ref([
-    { title: 'Name', value: 'name' },
-    { title: 'Slug', value: 'slug' },
-    { title: 'State Code', value: 'code' },
+    { title: 'States', value: 'state_name.name' },
+    { title: 'Cities', value: 'city_name.name' },
+    { title: 'Address', value: 'address' },
+    { title: 'Zip Code', value: 'zip_code' },
+    { title: 'Phone', value: 'phone' },
+    { title: 'Google Maps Code', value: 'google_maps_code' },
+    { title: 'Google Rating', value: 'google_rating' },
     { title: 'Actions', value: 'actions', sortable: false },
 ]);
 
@@ -44,9 +48,9 @@ const router = useRouter();
 const items = ref([]);
 const search = ref('');
 
-const getState = () => {
+const getOffice = () => {
     loading.value = true;
-    axiosInstance.get('admin/states')
+    axiosInstance.get('admin/offices')
         .then(response => {
             loading.value = false;
             console.log(response.data); // Log the response to inspect the structure
@@ -58,15 +62,15 @@ const getState = () => {
         });
 };
 
-const editState = (item: { id: any; }) => {
-    router.push({ name: 'AdminStateEdit', params: { id: item.id } });
+const editOffice = (item: { id: any; }) => {
+    router.push({ name: 'AdminOfficesEdit', params: { id: item.id } });
 };
 
-const deleteState = (item: { name: any; id: any; }) => {
+const deleteOffice = (item: { name: any; id: any; }) => {
     if (confirm(`Are you sure you want to delete ${item.name}?`)) {
-        axiosInstance.delete(`admin/states/${item.id}`)
+        axiosInstance.delete(`admin/offices/${item.id}`)
             .then(() => {
-                getState();
+                getOffice();
             })
             .catch(error => {
                 console.log(error);
@@ -74,5 +78,5 @@ const deleteState = (item: { name: any; id: any; }) => {
     }
 };
 
-onMounted(getState);
+onMounted(getOffice);
 </script>

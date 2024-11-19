@@ -14,19 +14,19 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../pages/admin/pages/index.vue'),
   },
   {
-    path: '/admin/states',
-    name: 'AdminStates',
-    component: () => import('../pages/admin/pages/state/index.vue'),
+    path: '/admin/offices',
+    name: 'AdminOffices',
+    component: () => import('../pages/admin/pages/office/index.vue'),
   },
   {
-    path: '/admin/states/create',
-    name: 'AdminStateCreate',
-    component: () => import('../pages/admin/pages/state/create/index.vue'),
+    path: '/admin/offices/create',
+    name: 'AdminOfficesCreate',
+    component: () => import('../pages/admin/pages/office/create/index.vue'),
   },
   {
-    path: '/admin/states/edit/:id',
-    name: 'AdminStateEdit',
-    component: () => import('../pages/admin/pages/state/edit/index.vue'),
+    path: '/admin/offices/edit/:id',
+    name: 'AdminOfficesEdit',
+    component: () => import('../pages/admin/pages/office/edit/index.vue'),
   },
   {
     path: '/admin/products',

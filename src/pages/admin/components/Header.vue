@@ -5,7 +5,7 @@
       <v-toolbar-title>Admin</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn text :to="{ name: 'AdminHome' }" class="text-white">Dashboard</v-btn>
-      <v-btn text :to="{ name: 'AdminStates' }" class="text-white">States</v-btn>
+      <v-btn text :to="{ name: 'AdminOffices' }" class="text-white">Offices</v-btn>
       <v-btn text :to="{ name: 'AdminProducts' }" class="text-white">Products</v-btn>
       <v-btn text :to="{ name: 'Adminprojects' }" class="text-white">Projects</v-btn>
       <v-btn text :to="{ name: 'AdminBanners' }" class="text-white">Banners</v-btn>
