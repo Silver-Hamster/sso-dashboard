@@ -12,6 +12,9 @@
                         :to="{ name: 'AdminOfficesCreate' }">Create office</v-btn>
                 </v-toolbar>
             </template>
+            <template v-slot:item.google_maps_code="{ item }">
+                <v-icon v-if="item.google_maps_code">mdi-map-marker</v-icon>
+            </template>
             <template v-slot:item.actions="{ item }">
                 <div class="d-flex">
                     <v-btn icon @click="editOffice(item)" class="mx-2">
@@ -21,7 +24,6 @@
                         <v-icon>mdi-delete</v-icon>
                     </v-btn>
                 </div>
-
             </template>
         </v-data-table>
     </v-container>
@@ -33,7 +35,7 @@ import axiosInstance from '@plugins/axios';
 import { useRouter } from 'vue-router';
 
 const headers = ref([
-    { title: 'States', value: 'state_name.name' },
+    { title: 'States', value: 'states.name' },
     { title: 'Cities', value: 'city_name.name' },
     { title: 'Address', value: 'address' },
     { title: 'Zip Code', value: 'zip_code' },
