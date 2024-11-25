@@ -3,12 +3,12 @@
         <v-data-table :headers="headers" :items="items" :search="search" :loading="loading">
             <template v-slot:top>
                 <v-toolbar flat>
-                    <v-toolbar-title>Products</v-toolbar-title>
+                    <v-toolbar-title>User</v-toolbar-title>
                     <v-divider class="mx-2" inset vertical></v-divider>
                     <v-spacer></v-spacer>
                     <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" class="me-4" single-line
                         hide-details></v-text-field>
-                    <v-btn class="btn border text-light bg-dark px-2 rounded me-4" :to="{ name: 'AdminProductCreate' }">Create Product</v-btn>
+                    <v-btn class="btn border text-light bg-dark px-2 rounded me-4" :to="{ name: 'AdminUserCreate' }">Create User</v-btn>
                 </v-toolbar>
             </template>
             <template v-slot:item.actions="{ item }">
@@ -31,10 +31,8 @@ import { ref } from 'vue';
 import axiosInstance from '@plugins/axios'
 const headers = ref([
     { title: 'Name', value: 'name' },
-    { title: 'Slug', value: 'slug' },
-    { title: 'Sort Description', value: 'short_description' },
-    { title: 'Long Description', value: 'description' },
-    // { title: 'Images', value: 'images' },
+    { title: 'Email', value: 'email' },
+    { title: 'User Type', value: 'user_type.name' },
     { title: 'Actions', value: 'actions', sortable: false },
 ]);
 
@@ -46,10 +44,10 @@ const search = ref('');
 
 const getProduct = () => {
     loading.value = true;
-    axiosInstance.get('products')
+    axiosInstance.get('admin/users')
         .then(response => {
             loading.value = false;
-            items.value = response.data.data;
+            items.value = response.data;
         })
         .catch(error => {
             loading.value = false;
@@ -59,12 +57,12 @@ const getProduct = () => {
 const editProduct = (item: { id: any; }) => {
     // Navigate to the edit page with the product ID
     // Assuming you have a route named 'AdminProductEdit' that takes an 'id' parameter
-    router.push({ name: 'AdminProductEdit', params: { id: item.id } });
+    router.push({ name: 'AdminUserEdit', params: { id: item.id } });
 };
 
 const deleteProduct = (item: { name: any; id: any; }) => {
     if (confirm(`Are you sure you want to delete ${item.name}?`)) {
-        axiosInstance.delete(`products/${item.id}`)
+        axiosInstance.delete(`admin/users/${item.id}`)
             .then(() => {
                 getProduct(); // Refresh the product list
             })

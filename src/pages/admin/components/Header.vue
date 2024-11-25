@@ -6,7 +6,7 @@
       <v-spacer></v-spacer>
       <v-btn text :to="{ name: 'AdminHome' }" class="text-white">Dashboard</v-btn>
       <v-btn text :to="{ name: 'AdminOffices' }" class="text-white">Offices</v-btn>
-      <v-btn text :to="{ name: 'AdminProducts' }" class="text-white">Products</v-btn>
+      <v-btn text :to="{ name: 'AdminUsers' }" class="text-white">user</v-btn>
       <v-btn text :to="{ name: 'Adminprojects' }" class="text-white">Projects</v-btn>
       <v-btn text :to="{ name: 'AdminBanners' }" class="text-white">Banners</v-btn>
       <v-btn text :to="{ name: 'AdminIndustries' }" class="text-white">Industries</v-btn>
