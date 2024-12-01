@@ -55,7 +55,7 @@ const getOffice = () => {
     axiosInstance.get('admin/offices')
         .then(response => {
             loading.value = false;
-            console.log(response.data); // Log the response to inspect the structure
+            // Log the response to inspect the structure
             items.value = response.data; // Ensure this matches the actual response structure
         })
         .catch(error => {

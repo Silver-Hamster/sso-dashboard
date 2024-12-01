@@ -1,15 +1,13 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router/auto'
-import { fa } from 'vuetify/locale'
+
+function isAuthenticated() {
+  // Replace this with your actual authentication check logic
+  return !!document.cookie.split('; ').find(row => row.startsWith('accessToken='));
+}
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'Home',
-    component: () => import('../pages/frontend/pages/index.vue'),
-    props: { isAdmin: false }
-  },
-  {
-    path: '/admin',
     name: 'AdminHome',
     component: () => import('../pages/admin/pages/index.vue'),
   },
@@ -44,49 +42,9 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../pages/admin/pages/user/edit/index.vue'),
   },
   {
-    path: '/admin/industry',
-    name: 'AdminIndustries',
-    component: () => import('../pages/admin/pages/industry/index.vue'),
-  },
-  {
-    path: '/admin/industry/create',
-    name: 'AdminIndustryCreate',
-    component: () => import('../pages/admin/pages/industry/create/index.vue'),
-  },
-  {
-    path: '/admin/industry/edit/:id',
-    name: 'AdminIndustryEdit',
-    component: () => import('../pages/admin/pages/industry/edit/index.vue'),
-  },
-  {
-    path: '/admin/projects',
-    name: 'Adminprojects',
-    component: () => import('../pages/admin/pages/projectss/index.vue'),
-  },
-  {
-    path: '/admin/projects/create',
-    name: 'AdminprojectsCreate',
-    component: () => import('../pages/admin/pages/projectss/create/index.vue'),
-  },
-  {
-    path: '/admin/projects/edit/:id',
-    name: 'AdminprojectEdit',
-    component: () => import('../pages/admin/pages/projectss/edit/index.vue'),
-  },
-  {
-    path: '/admin/banners',
-    name: 'AdminBanners',
-    component: () => import('../pages/admin/pages/banner/index.vue'),
-  },
-  {
-    path: '/admin/banner/create',
-    name: 'AdminBannerCreate',
-    component: () => import('../pages/admin/pages/banner/create/index.vue'),
-  },
-  {
-    path: '/admin/banners/edit/:id',
-    name: 'AdminBannerEdit',
-    component: () => import('../pages/admin/pages/banner/edit/index.vue'),
+    path: '/admin/login',
+    name: 'Adminlogin',
+    component: () => import('../pages/admin/pages/auth/login.vue'),
   },
 ]
 
@@ -95,5 +53,15 @@ const router = createRouter({
   routes,
 })
 
+// Global before guard
+router.beforeEach((to, from, next) => {
+  if (to.name === 'Adminlogin' && isAuthenticated()) {
+    next({ name: 'AdminHome' });
+  } else if (to.name !== 'Adminlogin' && !isAuthenticated()) {
+    next({ name: 'Adminlogin' });
+  } else {
+    next();
+  }
+});
 
 export default router

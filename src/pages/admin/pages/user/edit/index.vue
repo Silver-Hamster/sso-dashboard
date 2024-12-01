@@ -15,6 +15,16 @@
         counter 
         @click:append="show1 = !show1"
       ></v-text-field>
+      <v-text-field 
+        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+        :rules="confrim_passwordRules" 
+        :type="show1 ? 'text' : 'password'" 
+        hint="At least 8 characters"
+        label="Confirm Password" 
+        name=" Confirm password" 
+        counter 
+        @click:append="show1 = !show1"
+      ></v-text-field>
       <v-select 
         v-model="form.user_type_id" 
         label="Select User Type" 
@@ -93,7 +103,7 @@ const fetchUserDetails = async () => {
     form.value.name = user.name;
     form.value.email = user.email;
     form.value.user_type_id = user.user_type_id;
-    password.value = user.password; // Pre-fill the password field
+   // password.value = user.password; // Pre-fill the password field
   } catch (error) {
     console.error('Error fetching user details:', error);
   }
@@ -117,6 +127,10 @@ const emailRules = [
 const passwordRules = [
   (v: string) => v.length === 0 || v.length >= 8 || 'Password must be at least 8 characters',
 ];
+const confrim_passwordRules = computed(() => [
+(v: string) => v.length === 0 || v.length >= 8 || 'Password must be at least 8 characters',
+(v: string) => v === password.value || 'Passwords do not match',
+]);
 
 const userTypeRules = [
   (v: string) => !!v || 'User type is required',
@@ -128,8 +142,7 @@ const submitForm = () => {
       name: form.value.name,
       email: form.value.email,
       user_type_id: form.value.user_type_id,
-      password: form.value.password,
-      // ...(password.value && { password: password.value }),
+      ...(password.value && { password: password.value }),
     };
     axiosInstance.patch(`/admin/users/${id.value}`, formData).then(() => {
       showPopup.value = true;

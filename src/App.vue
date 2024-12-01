@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-main>
-      <component :is="currentLayout" />
+      <!-- <component :is="currentLayout" /> -->
+       <AdminLayout />
     </v-main>
   </v-app>
 </template>
@@ -15,7 +16,7 @@ import AdminLayout from './pages/admin/layouts/default.vue';
 const route = useRoute();
 
 // Determine the layout based on the route
-const currentLayout = computed(() => {
-  return route.path.startsWith('/admin') ? AdminLayout : FrontendLayout;
-});
+// const currentLayout = computed(() => {
+//   return route.path.startsWith('/admin') ? AdminLayout : FrontendLayout;
+// });
 </script>

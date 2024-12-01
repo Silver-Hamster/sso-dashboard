@@ -13,6 +13,7 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "core-js": "^3.37.1",
+    "js-cookie": "^3.0.5",
     "roboto-fontface": "*",
     "slick-carousel": "^1.8.1",
     "vue": "^3.4.31",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@babel/types": "^7.24.7",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.14.10",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-typescript": "^13.0.0",
