@@ -4,13 +4,13 @@
     <main>
       <router-view></router-view>
     </main>
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>
 
 <script lang="ts" setup>
   import Header from '../components/Header.vue'; // Updated path
-  import Footer from '../components/Footer.vue'; // Updated path
+  // import Footer from '../components/Footer.vue'; // Updated path
 </script>
 
 <style scoped>

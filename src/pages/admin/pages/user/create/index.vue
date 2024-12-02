@@ -99,7 +99,7 @@ const submitForm = () => {
       console.log('Form submitted successfully:', response.data);
       showPopup.value = true;
       resetForm();
-    }).catch(error => {
+    }).catch(error => { 
       console.error('Error submitting form:', error);
       showErrorPopup.value = true;
     });

@@ -98,8 +98,8 @@ const isLoadingCities = ref(false);
 
 const fetchStates = async () => {
   try {
-    const response = await axiosInstance.get('/admin/states');
-    stateOptions.value = response.data;
+    const response = await axiosInstance.get('/admin/states?page=1&itemsPerPage=100');
+    stateOptions.value = response.data.data;
   } catch (error) {
     console.error('Error fetching states:', error);
   }
@@ -108,8 +108,8 @@ const fetchStates = async () => {
 const fetchCities = async (stateCode: string) => {
   isLoadingCities.value = true;
   try {
-    const response = await axiosInstance.get(`/admin/cities?stateCode=${stateCode}`);
-    cityOptions.value = response.data.map((city: { id: string; name: string }) => ({
+    const response = await axiosInstance.get(`/admin/cities?stateCode=${stateCode}&page=1&itemsPerPage=10000`);
+    cityOptions.value = response.data.data.map((city: { id: string; name: string }) => ({
       id: city.id,
       name: city.name,
     }));
