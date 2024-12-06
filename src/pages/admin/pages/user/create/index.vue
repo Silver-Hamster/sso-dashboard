@@ -4,7 +4,7 @@
     <v-form ref="formRef" @submit.prevent="submitForm" class="mb-9">
       <v-text-field v-model="form.name" label="Name" :rules="nameRules" required></v-text-field>
       <v-text-field v-model="form.email" label="Email" :rules="emailRules" required></v-text-field>
-      <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+      <v-text-field v-model="form.password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
         :rules="passwordRules" :type="show1 ? 'text' : 'password'" hint="At least 8 characters"
         label="Password" name="input-10-1" counter @click:append="show1 = !show1"></v-text-field>
       <v-select v-model="form.user_type_id" label="Select User Type" :items="user_types_Options" item-value="id"
