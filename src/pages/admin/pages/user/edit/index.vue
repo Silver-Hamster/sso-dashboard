@@ -45,7 +45,7 @@
         <v-card-text>User updated successfully!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="showPopup = false">OK</v-btn>
+          <v-btn color="green darken-1"  @click="showPopup = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -57,7 +57,7 @@
         <v-card-text>There was an error updating the user. Please try again.</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="showErrorPopup = false">OK</v-btn>
+          <v-btn color="red darken-1"  @click="showErrorPopup = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

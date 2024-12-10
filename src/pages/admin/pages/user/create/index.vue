@@ -20,7 +20,7 @@
         <v-card-text>Form submitted successfully!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="showPopup = false">OK</v-btn>
+          <v-btn color="green darken-1"  @click="showPopup = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -32,7 +32,7 @@
         <v-card-text>There was an error submitting the form. Please try again.</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="showErrorPopup = false">OK</v-btn>
+          <v-btn color="red darken-1"  @click="showErrorPopup = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -44,9 +44,8 @@ import axiosInstance from '@plugins/axios';
 import { ref,onMounted } from 'vue';
 
 const show1 = ref(false);
-const password = ref('');
-const formRef = ref(null);
-const form = ref({
+const formRef = ref<null | { validate: () => boolean | Promise<boolean>;  resetValidation: () => void;}>(null);
+  const form = ref({
   name: '',
   email: '',
   password: '',
@@ -117,6 +116,7 @@ const resetForm = () => {
     password: '',
     user_type_id: '',
   };
-  formRef.value.resetValidation();
-};
+  if (formRef.value) {
+    formRef.value.resetValidation();
+  }};
 </script>

@@ -52,7 +52,16 @@
   import { ref, onMounted } from "vue";
   import { useRouter } from "vue-router";
   import axiosInstance from "@plugins/axios";
-  
+  interface Office {
+  id: number;
+  states: { name: string };
+  city_name: { name: string };
+  address: string;
+  zip_code: string;
+  phone: string;
+  google_maps_code: string;
+  google_rating: number;
+}
   // Reactive data
   const headers = ref([
     { title: "States", key: "states.name" },
@@ -65,8 +74,8 @@
     { title: "Actions", key: "actions", sortable: false },
   ]);
   
-  const items = ref([]);
-  const loading = ref(false);
+  const items = ref<Office[]>([]);
+    const loading = ref(false);
   const search = ref("");
   const pagination = ref({
     page: 1,
@@ -102,8 +111,8 @@
     router.push({ name: "AdminOfficesEdit", params: { id: item.id } });
   };
   
-  const deleteOffice = (item: { name: string; id: any }) => {
-    if (confirm(`Are you sure you want to delete ${item.name}?`)) {
+  const deleteOffice = (item: {id: any }) => {
+    if (confirm(`Are you sure you want to delete ?`)) {
       axiosInstance
         .delete(`admin/offices/${item.id}`)
         .then(() => getOffices())

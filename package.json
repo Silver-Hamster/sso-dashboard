@@ -17,7 +17,8 @@
     "roboto-fontface": "*",
     "slick-carousel": "^1.8.1",
     "vue": "^3.4.31",
-    "vue-slick-carousel": "^1.0.6",
+    "vue-router": "^4.0.13",
+    "vue-slick-carousel": "^1.0.5",
     "vuetify": "^3.6.11"
   },
   "devDependencies": {
@@ -44,7 +45,6 @@
     "vite": "^5.3.3",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vite-plugin-vuetify": "^2.0.3",
-    "vue-router": "^4.4.0",
     "vue-tsc": "^2.0.26"
   }
 }

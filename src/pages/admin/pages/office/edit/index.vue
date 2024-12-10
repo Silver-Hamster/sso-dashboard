@@ -53,7 +53,7 @@
         <v-card-title>Success</v-card-title>
         <v-card-text>Office updated successfully!</v-card-text>
         <v-card-actions>
-          <v-btn color="primary" text @click="showPopup = false">OK</v-btn>
+          <v-btn color="primary"  @click="showPopup = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -62,7 +62,7 @@
         <v-card-title>Error</v-card-title>
         <v-card-text>There was an error updating the office. Please try again.</v-card-text>
         <v-card-actions>
-          <v-btn color="primary" text @click="showErrorPopup = false">OK</v-btn>
+          <v-btn color="primary"  @click="showErrorPopup = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -148,12 +148,11 @@ const getOfficeByID = async () => {
       form.value = {
         ...form.value,
         ...response.data,
-        // cities: response.data.city_name,
         states: response.data.states,
       };
       if (form.value.states.code) {
         await fetchCities(form.value.states.code);
-        form.value.cities = cityOptions.value.find(city => city.id === response.data.city_name.id) || '';
+        form.value.cities = response.data.city_name.id;
       }
     }
   } catch (error) {

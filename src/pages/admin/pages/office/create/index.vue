@@ -59,6 +59,7 @@
 import axiosInstance from '@plugins/axios';
 import { ref, onMounted, watch } from 'vue';
 
+
 interface State {
   id: string;
   name: string;
@@ -75,8 +76,8 @@ interface Form {
   google_maps_code: string;
 }
 
-const formRef = ref(null);
-const form = ref<Form>({
+const formRef = ref<null | { validate: () => boolean | Promise<boolean>;  resetValidation: () => void;}>(null);
+  const form = ref<Form>({
   address: '',
   cities: '',
   states: {
