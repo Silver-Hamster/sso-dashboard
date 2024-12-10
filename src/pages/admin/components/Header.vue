@@ -4,12 +4,12 @@
       <v-toolbar-title>Admin</v-toolbar-title>
       <v-spacer></v-spacer>
       <template v-if="accessToken">
-        <v-btn text :to="{ name: 'AdminHome' }" class="text-white">Dashboard</v-btn>
-        <v-btn text :to="{ name: 'AdminOffices' }" class="text-white">Offices</v-btn>
-        <v-btn text v-if="userType === 'admin'" :to="{ name: 'AdminUsers' }" class="text-white">Users</v-btn>
-        <v-btn text class="text-white" @click="logout">Logout</v-btn>
+        <v-btn  :to="{ name: 'AdminHome' }" class="text-white">Dashboard</v-btn>
+        <v-btn  :to="{ name: 'AdminOffices' }" class="text-white">Offices</v-btn>
+        <v-btn  v-if="userType === 'admin'" :to="{ name: 'AdminUsers' }" class="text-white">Users</v-btn>
+        <v-btn  class="text-white" @click="logout">Logout</v-btn>
       </template>
-      <v-btn text v-else :to="{ name: 'Adminlogin' }" class="text-white">Login</v-btn>
+      <v-btn  v-else :to="{ name: 'Adminlogin' }" class="text-white">Login</v-btn>
     </v-app-bar>
   </header>
 </template>
@@ -18,6 +18,7 @@
 import { useRouter } from 'vue-router';
 import axiosInstance from '@plugins/axios';
 import Cookies from 'js-cookie';
+
 
 const router = useRouter();
 const userType = ref(Cookies.get('userType'));

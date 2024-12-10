@@ -19,7 +19,6 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/admin/': RouteRecordInfo<'/admin/', '/admin', Record<never, never>, Record<never, never>>,
-    '/admin/components/Footer': RouteRecordInfo<'/admin/components/Footer', '/admin/components/Footer', Record<never, never>, Record<never, never>>,
     '/admin/components/Header': RouteRecordInfo<'/admin/components/Header', '/admin/components/Header', Record<never, never>, Record<never, never>>,
     '/admin/layouts/default': RouteRecordInfo<'/admin/layouts/default', '/admin/layouts/default', Record<never, never>, Record<never, never>>,
     '/admin/pages/': RouteRecordInfo<'/admin/pages/', '/admin/pages', Record<never, never>, Record<never, never>>,
