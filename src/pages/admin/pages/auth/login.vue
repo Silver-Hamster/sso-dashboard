@@ -25,8 +25,21 @@
                 variant="outlined" 
                 @click:append-inner="visible = !visible"
             ></v-text-field>
-            <v-btn class="mb-8" color="blue" size="large" variant="tonal" block @click="handleLogin">
-                Log In
+            <v-btn 
+                class="mb-8" 
+                color="blue" 
+                size="large" 
+                variant="tonal" 
+                block 
+                @click="handleLogin"
+                :disabled="loading"
+            >
+                <template v-if="loading">
+                    <v-progress-circular indeterminate color="white" size="24"></v-progress-circular>
+                </template>
+                <template v-else>
+                    Log In
+                </template>
             </v-btn>
         </v-card>
 
@@ -51,8 +64,10 @@ const snackbar = ref({
     message: '',
     color: '',
 });
+const loading = ref(false);
 
 const handleLogin = async () => {
+    loading.value = true;
     try {
         const response = await axiosInstance.post('/auth/login', {
             email: email.value,
@@ -80,6 +95,8 @@ const handleLogin = async () => {
             message: error.response?.data?.message || 'Login failed! Please check your credentials.',
             color: 'red',
         };
+    } finally {
+        loading.value = false;
     }
 };
 </script>
