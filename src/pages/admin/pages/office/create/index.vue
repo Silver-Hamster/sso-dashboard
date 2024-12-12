@@ -3,32 +3,13 @@
     <h2 class="py-5">Create Office</h2>
     <v-form ref="formRef" @submit.prevent="submitForm">
       <v-row>
-        <v-select
-          v-model="form.states"
-          label="Select State"
-          :items="stateOptions"
-          item-title="name"
-          return-object
-          :rules="stateRules"
-          required
-        ></v-select>
+        <v-select v-model="form.states" label="Select State" :items="stateOptions" item-title="name" return-object
+          :rules="stateRules" required></v-select>
         <v-col cols="12" md="6" lg="6">
-          <v-select
-            v-model="form.cities"
-            label="Select City"
-            :items="cityOptions"
-            :disabled="!form.states || cityOptions.length === 0"
-            item-value="id"
-            item-title="name"
-            :rules="cityRules"
-            required
-          ></v-select>
-          <v-progress-circular
-            v-if="isLoadingCities"
-            indeterminate
-            color="primary"
-            class="my-2"
-          ></v-progress-circular>
+          <v-select v-model="form.cities" label="Select City" :items="cityOptions"
+            :disabled="!form.states || cityOptions.length === 0" item-value="id" item-title="name" :rules="cityRules"
+            required></v-select>
+          <v-progress-circular v-if="isLoadingCities" indeterminate color="primary" class="my-2"></v-progress-circular>
         </v-col>
         <v-col cols="12" md="6" lg="6">
           <v-text-field v-model="form.zip_code" label="Zipcode" :rules="zipCodeRules" required></v-text-field>
@@ -40,16 +21,22 @@
           <v-text-field v-model="form.google_rating" label="Google Rating" :rules="ratingRules" required></v-text-field>
         </v-col>
         <v-col cols="12" md="6" lg="6">
-          <v-textarea v-model="form.google_maps_code" label="Google Map Code" :rules="googleMapCodeRules" required></v-textarea>
+          <v-textarea v-model="form.google_maps_code" label="Google Map Code" :rules="googleMapCodeRules"
+            required></v-textarea>
         </v-col>
         <v-col cols="12" md="12" lg="12">
           <v-textarea v-model="form.address" label="Address" :rules="addressRules" required></v-textarea>
         </v-col>
       </v-row>
       <v-btn :to="{ name: 'AdminOffices' }" color="secondary" class="mr-2 my-5">Back</v-btn>
-      <v-btn type="submit" color="primary my-5">Submit</v-btn>
-    </v-form>
-
+      <v-btn type="submit" :disabled="isSubmitting" color="primary my-5">
+        <template v-if="isSubmitting">
+          <v-progress-circular indeterminate color="white" size="20"></v-progress-circular>
+        </template>
+        <template v-else>
+          Submit
+        </template>
+      </v-btn> </v-form>
     <!-- Success and Error Dialogs -->
     <!-- ...same as above -->
   </v-container>
@@ -76,8 +63,8 @@ interface Form {
   google_maps_code: string;
 }
 
-const formRef = ref<null | { validate: () => boolean | Promise<boolean>;  resetValidation: () => void;}>(null);
-  const form = ref<Form>({
+const formRef = ref<null | { validate: () => boolean | Promise<boolean>; resetValidation: () => void; }>(null);
+const form = ref<Form>({
   address: '',
   cities: '',
   states: {
@@ -96,6 +83,7 @@ const cityOptions = ref<Array<{ id: string; name: string }>>([]);
 const showPopup = ref(false);
 const showErrorPopup = ref(false);
 const isLoadingCities = ref(false);
+const isSubmitting = ref(false);
 
 const fetchStates = async () => {
   try {
@@ -156,25 +144,25 @@ const addressRules = [
   (v: string) => v.length <= 250 || 'Address must be less than 250 characters',
 ];
 
-const submitForm = () => {
-  const isValid = formRef.value?.validate();
+const submitForm = async () => {
+  const isValid = await formRef.value?.validate();
   if (!isValid) {
     showErrorPopup.value = true;
     console.error('Validation failed. Form data is incomplete or incorrect.');
     return;
   }
 
-  axiosInstance
-    .post('/admin/offices', { ...form.value })
-    .then((response) => {
-      console.log('Form submitted successfully:', response.data);
-      resetForm();
-      showPopup.value = true;
-    })
-    .catch((error) => {
-      console.error('Error submitting form:', error);
-      showErrorPopup.value = true;
-    });
+  isSubmitting.value = true;
+  try {
+    await axiosInstance.post('/admin/offices', { ...form.value });
+    resetForm();
+    showPopup.value = true;
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    showErrorPopup.value = true;
+  } finally {
+    isSubmitting.value = false;
+  }
 };
 
 const resetForm = () => {

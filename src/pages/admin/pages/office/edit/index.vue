@@ -44,7 +44,15 @@
 
       <!-- Action Buttons -->
       <v-btn :to="{ name: 'AdminOffices' }" color="secondary" class="mr-2 my-5">Back</v-btn>
-      <v-btn type="submit" color="primary my-5">Update</v-btn>
+      <!-- <v-btn type="submit" color="primary my-5">Update</v-btn> -->
+      <v-btn type="submit" :disabled="isSubmitting" color="primary my-5">
+        <template v-if="isSubmitting">
+          <v-progress-circular indeterminate color="white" size="20"></v-progress-circular>
+        </template>
+        <template v-else>
+          Update
+        </template>
+      </v-btn>
     </v-form>
 
     <!-- Success and Error Popups -->
@@ -113,6 +121,8 @@ const cityOptions = ref<Array<{ id: string; name: string }>>([]);
 const isLoadingCities = ref(false);
 const showPopup = ref(false);
 const showErrorPopup = ref(false);
+const isSubmitting = ref(false);
+
 
 // Fetch states data
 const fetchStates = async () => {
@@ -162,6 +172,7 @@ const getOfficeByID = async () => {
 
 // Submit the form
 const submitForm = async () => {
+  isSubmitting.value = true;
   try {
     const response = await axiosInstance.patch(`/admin/offices/${id.value}`, form.value, {
       headers: { 'Content-Type': 'application/json' },
@@ -171,8 +182,11 @@ const submitForm = async () => {
   } catch (error) {
     console.error('Error updating office:', error);
     showErrorPopup.value = true;
+  }finally {
+    isSubmitting.value = false;
   }
 };
+
 
 // Watch for state changes
 watch(() => form.value.states, (newState) => {

@@ -35,8 +35,14 @@
         required
       ></v-select>
       <v-btn :to="{ name: 'AdminUsers' }" color="secondry" class="mr-2">Back</v-btn>
-      <v-btn type="submit" color="primary">Update</v-btn>
-    </v-form>
+      <v-btn type="submit" :disabled="isSubmitting" color="primary " my-5>
+        <template v-if="isSubmitting">
+          <v-progress-circular indeterminate color="white" size="20" class="px-5"></v-progress-circular>
+        </template>
+        <template v-else>
+          Update
+        </template>
+      </v-btn>    </v-form>
 
     <!-- Success Popup -->
     <v-dialog v-model="showPopup" max-width="290">
@@ -136,7 +142,17 @@ const userTypeRules = [
   (v: string) => !!v || 'User type is required',
 ];
 
-const submitForm = () => {
+const isSubmitting = ref(false);
+
+const submitForm = async () => {
+  // const isValid = await formRef.value?.validate();
+  // if (!isValid) {
+  //   showErrorPopup.value = true;
+  //   console.error('Validation failed. Form data is incomplete or incorrect.');
+  //   return;
+  // }
+
+  isSubmitting.value = true;
   try {
     const formData = {
       name: form.value.name,
@@ -144,15 +160,13 @@ const submitForm = () => {
       user_type_id: form.value.user_type_id,
       ...(password.value && { password: password.value }),
     };
-    axiosInstance.patch(`/admin/users/${id.value}`, formData).then(() => {
-      showPopup.value = true;
-    }).catch(error => {
-      console.error('Error updating user:', error);
-      showErrorPopup.value = true;
-    });
+    await axiosInstance.patch(`/admin/users/${id.value}`, formData);
+    showPopup.value = true;
   } catch (error) {
     console.error('Error updating user:', error);
     showErrorPopup.value = true;
+  } finally {
+    isSubmitting.value = false;
   }
 };
 </script>
