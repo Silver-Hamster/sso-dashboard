@@ -3,13 +3,16 @@
     <h2 class="py-5">Create Office</h2>
     <v-form ref="formRef" @submit.prevent="submitForm">
       <v-row>
-        <v-select v-model="form.states" label="Select State" :items="stateOptions" item-title="name" return-object
-          :rules="stateRules" required></v-select>
         <v-col cols="12" md="6" lg="6">
-          <v-select v-model="form.cities" label="Select City" :items="cityOptions"
-            :disabled="!form.states || cityOptions.length === 0" item-value="id" item-title="name" :rules="cityRules"
-            required></v-select>
-          <v-progress-circular v-if="isLoadingCities" indeterminate color="primary" class="my-2"></v-progress-circular>
+          <v-autocomplete v-model="form.states" :items="stateOptions" item-title="name" item-value="code"
+            label="Select State" :loading="isLoadingStates" @change="fetchCities" return-object></v-autocomplete>
+        </v-col>
+        <v-col cols="12" md="6" lg="6">
+          <v-autocomplete v-model="form.cities" :items="cityOptions" item-title="name" item-value="id"
+            :label="cityPlaceholder" :loading="isLoadingCities" :disabled="!form.states || cityOptions.length === 0"
+            :rules="cityRules" required></v-autocomplete>
+
+          <!-- <v-progress-circular v-if="isLoadingCities" indeterminate color="primary" class="my-2"></v-progress-circular> -->
         </v-col>
         <v-col cols="12" md="6" lg="6">
           <v-text-field v-model="form.zip_code" label="Zipcode" :rules="zipCodeRules" required></v-text-field>
@@ -37,7 +40,7 @@
           Submit
         </template>
       </v-btn> </v-form>
-      
+
     <!-- Success Popup -->
     <v-dialog v-model="showPopup" max-width="290">
       <v-card>
@@ -86,6 +89,7 @@ interface Form {
   google_rating: string;
   google_maps_code: string;
 }
+const cityPlaceholder = computed(() => isLoadingCities.value ? 'Searching...' : 'Select City');
 
 const formRef = ref<null | { validate: () => boolean | Promise<boolean>; resetValidation: () => void; }>(null);
 const form = ref<Form>({
@@ -108,13 +112,18 @@ const showPopup = ref(false);
 const showErrorPopup = ref(false);
 const isLoadingCities = ref(false);
 const isSubmitting = ref(false);
+const isLoadingStates = ref(false);
+
 
 const fetchStates = async () => {
+  isLoadingStates.value = true;
   try {
     const response = await axiosInstance.get('/admin/states?page=1&itemsPerPage=100');
     stateOptions.value = response.data.data;
   } catch (error) {
     console.error('Error fetching states:', error);
+  } finally {
+    isLoadingStates.value = false;
   }
 };
 

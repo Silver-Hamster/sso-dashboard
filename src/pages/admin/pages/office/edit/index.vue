@@ -9,10 +9,10 @@
 
         <!-- Select City -->
         <v-col cols="12" md="6" lg="6">
-          <v-select v-model="form.cities" label="Select City" :items="cityOptions"
+          <v-select v-model="form.cities" :label="cityPlaceholder" :items="cityOptions"
             :disabled="!form.states || cityOptions.length === 0" item-value="id" item-title="name" :rules="cityRules"
-            required></v-select>
-          <v-progress-circular v-if="isLoadingCities" indeterminate color="primary" class="my-2"></v-progress-circular>
+            required :loading="isLoadingCities"></v-select>
+          <!-- <v-progress-circular v-if="isLoadingCities" indeterminate color="primary" class="my-2"></v-progress-circular> -->
         </v-col>
 
         <!-- Zip Code -->
@@ -78,6 +78,9 @@
 </template>
 
 <script lang="ts" setup>
+const cityPlaceholder = computed(() => isLoadingCities.value ? 'Searching...' : 'Select City');
+
+import router from '@/router';
 import axiosInstance from '@plugins/axios';
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -179,6 +182,9 @@ const submitForm = async () => {
     });
     console.log('Office updated successfully:', response.data);
     showPopup.value = true;
+    router.push({ name: 'AdminOffices' });
+
+    
   } catch (error) {
     console.error('Error updating office:', error);
     showErrorPopup.value = true;
