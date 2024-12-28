@@ -3,15 +3,15 @@
     <h2 class="py-5">Edit Office</h2>
     <v-form ref="formRef" @submit.prevent="submitForm">
       <v-row>
-        <!-- Select State -->
-        <v-select v-model="form.states" label="Select State" :items="stateOptions" item-title="name" return-object
-          :rules="stateRules" required></v-select>
-
+        <v-autocomplete v-model="form.states" :items="stateOptions" item-title="name" item-value="code"
+          label="Select State" :loading="isLoadingStates" @change="fetchCities" return-object :rules="stateRules"
+          required></v-autocomplete>
         <!-- Select City -->
         <v-col cols="12" md="6" lg="6">
-          <v-select v-model="form.cities" :label="cityPlaceholder" :items="cityOptions"
-            :disabled="!form.states || cityOptions.length === 0" item-value="id" item-title="name" :rules="cityRules"
-            required :loading="isLoadingCities"></v-select>
+
+          <v-autocomplete v-model="form.cities" :items="cityOptions" item-title="name" item-value="id"
+            :label="cityPlaceholder" :loading="isLoadingCities" :disabled="!form.states || cityOptions.length === 0"
+            :rules="cityRules" required></v-autocomplete>
           <!-- <v-progress-circular v-if="isLoadingCities" indeterminate color="primary" class="my-2"></v-progress-circular> -->
         </v-col>
 
@@ -61,7 +61,7 @@
         <v-card-title>Success</v-card-title>
         <v-card-text>Office updated successfully!</v-card-text>
         <v-card-actions>
-          <v-btn color="primary"  @click="showPopup = false">OK</v-btn>
+          <v-btn color="primary" @click="showPopup = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -70,7 +70,7 @@
         <v-card-title>Error</v-card-title>
         <v-card-text>There was an error updating the office. Please try again.</v-card-text>
         <v-card-actions>
-          <v-btn color="primary"  @click="showErrorPopup = false">OK</v-btn>
+          <v-btn color="primary" @click="showErrorPopup = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -125,15 +125,20 @@ const isLoadingCities = ref(false);
 const showPopup = ref(false);
 const showErrorPopup = ref(false);
 const isSubmitting = ref(false);
+const isLoadingStates = ref(false);
+
 
 
 // Fetch states data
 const fetchStates = async () => {
+  isLoadingStates.value = true;
   try {
     const response = await axiosInstance.get('/admin/states?page=1&itemsPerPage=100');
     stateOptions.value = response.data.data;
   } catch (error) {
     console.error('Error fetching states:', error);
+  } finally {
+    isLoadingStates.value = false;
   }
 };
 
@@ -184,11 +189,11 @@ const submitForm = async () => {
     showPopup.value = true;
     router.push({ name: 'AdminOffices' });
 
-    
+
   } catch (error) {
     console.error('Error updating office:', error);
     showErrorPopup.value = true;
-  }finally {
+  } finally {
     isSubmitting.value = false;
   }
 };

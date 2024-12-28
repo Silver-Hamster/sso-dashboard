@@ -5,7 +5,7 @@
       <v-row>
         <v-col cols="12" md="6" lg="6">
           <v-autocomplete v-model="form.states" :items="stateOptions" item-title="name" item-value="code"
-            label="Select State" :loading="isLoadingStates" @change="fetchCities" return-object></v-autocomplete>
+            label="Select State" :loading="isLoadingStates" @change="fetchCities" return-object :rules="stateRules" required></v-autocomplete>
         </v-col>
         <v-col cols="12" md="6" lg="6">
           <v-autocomplete v-model="form.cities" :items="cityOptions" item-title="name" item-value="id"
