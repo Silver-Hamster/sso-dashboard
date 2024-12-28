@@ -22,7 +22,7 @@
 
         <!-- Phone Number -->
         <v-col cols="12" md="6" lg="6">
-          <v-text-field v-model="form.phone" label="Phone Number" :rules="phoneRules" required></v-text-field>
+          <v-text-field v-model="form.phone" label="Phone Number" :rules="phoneRules" ></v-text-field>
         </v-col>
 
         <!-- Google Rating -->
@@ -222,8 +222,7 @@ const zipCodeRules = [
   (v: string) => /^\d{5}(-\d{4})?$/.test(v) || 'Invalid zip code format',
 ];
 const phoneRules = [
-  (v: string) => !!v || 'Phone number is required',
-  (v: string) => /^\+?\d{10,15}$/.test(v) || 'Invalid phone number format',
+(v: string) => !v || /^\+?\d{10,15}$/.test(v) || 'Invalid phone number format',
 ];
 const ratingRules = [
   (v: string) => !!v || 'Rating is required',

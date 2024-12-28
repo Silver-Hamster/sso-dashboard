@@ -5,7 +5,8 @@
       <v-row>
         <v-col cols="12" md="6" lg="6">
           <v-autocomplete v-model="form.states" :items="stateOptions" item-title="name" item-value="code"
-            label="Select State" :loading="isLoadingStates" @change="fetchCities" return-object :rules="stateRules" required></v-autocomplete>
+            label="Select State" :loading="isLoadingStates" @change="fetchCities" return-object :rules="stateRules"
+            required></v-autocomplete>
         </v-col>
         <v-col cols="12" md="6" lg="6">
           <v-autocomplete v-model="form.cities" :items="cityOptions" item-title="name" item-value="id"
@@ -18,7 +19,7 @@
           <v-text-field v-model="form.zip_code" label="Zipcode" :rules="zipCodeRules" required></v-text-field>
         </v-col>
         <v-col cols="12" md="6" lg="6">
-          <v-text-field v-model="form.phone" label="Phone Number" :rules="phoneRules" required></v-text-field>
+          <v-text-field v-model="form.phone" label="Phone Number" :rules="phoneRules"></v-text-field>
         </v-col>
         <v-col cols="12" md="6" lg="6">
           <v-text-field v-model="form.google_rating" label="Google Rating" :rules="ratingRules" required></v-text-field>
@@ -161,8 +162,7 @@ const zipCodeRules = [
   (v: string) => /^\d{5}(-\d{4})?$/.test(v) || 'Invalid zip code format',
 ];
 const phoneRules = [
-  (v: string) => !!v || 'Phone number is required',
-  (v: string) => /^\+?\d{10,15}$/.test(v) || 'Invalid phone number format',
+  (v: string) => !v || /^\+?\d{10,15}$/.test(v) || 'Invalid phone number format',
 ];
 const ratingRules = [
   (v: string) => !!v || 'Rating is required',
@@ -184,17 +184,18 @@ const submitForm = async () => {
     console.error('Validation failed. Form data is incomplete or incorrect.');
     return;
   }
-
-  isSubmitting.value = true;
-  try {
-    await axiosInstance.post('/admin/offices', { ...form.value });
-    resetForm();
-    showPopup.value = true;
-  } catch (error) {
-    console.error('Error submitting form:', error);
-    showErrorPopup.value = true;
-  } finally {
-    isSubmitting.value = false;
+  else {
+    isSubmitting.value = true;
+    try {
+      await axiosInstance.post('/admin/offices', { ...form.value });
+      resetForm();
+      showPopup.value = true;
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      showErrorPopup.value = true;
+    } finally {
+      isSubmitting.value = false;
+    }
   }
 };
 
