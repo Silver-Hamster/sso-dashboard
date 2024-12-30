@@ -10,7 +10,7 @@
         </v-col>
         <v-col cols="12" md="6" lg="6">
           <v-autocomplete v-model="form.cities" :items="cityOptions" item-title="name" item-value="id"
-            :label="cityPlaceholder" :loading="isLoadingCities" :disabled="!form.states || cityOptions.length === 0"
+            :label="cityPlaceholder" :loading="isLoadingCities" :disabled="!form.states.code"
             :rules="cityRules" required></v-autocomplete>
 
           <!-- <v-progress-circular v-if="isLoadingCities" indeterminate color="primary" class="my-2"></v-progress-circular> -->
@@ -72,8 +72,7 @@
 
 <script lang="ts" setup>
 import axiosInstance from '@plugins/axios';
-import { ref, onMounted, watch } from 'vue';
-
+import { ref, onMounted, watch, computed } from 'vue';
 
 interface State {
   id: string;
@@ -90,6 +89,7 @@ interface Form {
   google_rating: string;
   google_maps_code: string;
 }
+
 const cityPlaceholder = computed(() => isLoadingCities.value ? 'Searching...' : 'Select City');
 
 const formRef = ref<null | { validate: () => boolean | Promise<boolean>; resetValidation: () => void; }>(null);
@@ -114,7 +114,6 @@ const showErrorPopup = ref(false);
 const isLoadingCities = ref(false);
 const isSubmitting = ref(false);
 const isLoadingStates = ref(false);
-
 
 const fetchStates = async () => {
   isLoadingStates.value = true;
@@ -183,8 +182,7 @@ const submitForm = async () => {
     showErrorPopup.value = true;
     console.error('Validation failed. Form data is incomplete or incorrect.');
     return;
-  }
-  else {
+  } else {
     isSubmitting.value = true;
     try {
       await axiosInstance.post('/admin/offices', { ...form.value });

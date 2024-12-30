@@ -9,9 +9,17 @@
         <!-- Select City -->
         <v-col cols="12" md="6" lg="6">
 
-          <v-autocomplete v-model="form.cities" :items="cityOptions" item-title="name" item-value="id"
-            :label="cityPlaceholder" :loading="isLoadingCities" :disabled="!form.states || cityOptions.length === 0"
-            :rules="cityRules" required></v-autocomplete>
+          <v-autocomplete 
+  v-model="form.cities" 
+  :items="cityOptions" 
+  item-title="name" 
+  item-value="id"
+  :label="cityPlaceholder" 
+  :loading="isLoadingCities" 
+  :disabled="!form.states.code" 
+  :rules="cityRules" 
+  required
+></v-autocomplete>
           <!-- <v-progress-circular v-if="isLoadingCities" indeterminate color="primary" class="my-2"></v-progress-circular> -->
         </v-col>
 
