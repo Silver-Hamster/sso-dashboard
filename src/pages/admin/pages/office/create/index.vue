@@ -129,6 +129,11 @@ interface State {
   code: string;
 }
 
+interface City {
+  id: string;
+  name: string;
+}
+
 interface Form {
   address: string;
   cities: string;
@@ -149,7 +154,10 @@ const formRef = ref<null | {
 }>(null);
 const form = ref<Form>({
   address: "",
-  cities: "",
+  cities: {
+    id: "",
+    name: "",
+  },
   states: {
     id: "",
     name: "",
