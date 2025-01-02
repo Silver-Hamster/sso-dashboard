@@ -136,7 +136,7 @@ interface City {
 
 interface Form {
   address: string;
-  cities: string;
+  cities: City;
   states: State;
   zip_code: string;
   phone: string;
